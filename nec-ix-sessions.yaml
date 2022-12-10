@@ -1,0 +1,375 @@
+zabbix_export:
+  version: '6.0'
+  date: '2022-12-10T06:58:59Z'
+  groups:
+    -
+      uuid: 36bff6c29af64692839d077febfc7079
+      name: 'Templates/Network devices'
+  templates:
+    -
+      uuid: 1403cddcb103412b9ad49a65e9d45174
+      template: 'NEC IX Sessions'
+      name: 'NEC IX Sessions'
+      groups:
+        -
+          name: 'Templates/Network devices'
+      items:
+        -
+          uuid: d0c7b61b0f364aa6833bdf7344f0a3b7
+          name: 'Session IPv4 Creates'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.119.2.3.84.12.1.3.0
+          key: net.session.ipv4.create
+          delay: 3m
+          preprocessing:
+            -
+              type: SIMPLE_CHANGE
+              parameters:
+                - ''
+          tags:
+            -
+              tag: Application
+              value: 'Session IPv4'
+        -
+          uuid: 0187e3f12f874c82aae08edff676a42e
+          name: 'Session IPv4 Entries'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.119.2.3.84.12.1.1.0
+          key: net.session.ipv4.entry
+          delay: 3m
+          tags:
+            -
+              tag: Application
+              value: 'Session IPv4'
+        -
+          uuid: cda5a586602344c7b77bf2e145d6ab95
+          name: 'Session IPv4 Overflows'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.119.2.3.84.12.1.4.0
+          key: net.session.ipv4.overflows
+          delay: 3m
+          preprocessing:
+            -
+              type: SIMPLE_CHANGE
+              parameters:
+                - ''
+          tags:
+            -
+              tag: Application
+              value: 'Session IPv4'
+        -
+          uuid: db00ad2a99654d50a3b7ac8620712136
+          name: 'Session IPv4 Peaks'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.119.2.3.84.12.1.2.0
+          key: net.session.ipv4.peaks
+          delay: 3m
+          preprocessing:
+            -
+              type: SIMPLE_CHANGE
+              parameters:
+                - ''
+          tags:
+            -
+              tag: Application
+              value: 'Session IPv4'
+        -
+          uuid: 793cb91a6e82465d8dcb20f612a1e776
+          name: 'Session IPv6 Creates'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.119.2.3.84.13.1.3.0
+          key: net.session.ipv6.create
+          delay: 3m
+          preprocessing:
+            -
+              type: SIMPLE_CHANGE
+              parameters:
+                - ''
+          tags:
+            -
+              tag: Application
+              value: 'Session IPv6'
+        -
+          uuid: 5ed3d0d3bf544277baf3aaeb49127ac4
+          name: 'Session IPv6 Entries'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.119.2.3.84.13.1.1.0
+          key: net.session.ipv6.entry
+          delay: 3m
+          tags:
+            -
+              tag: Application
+              value: 'Session IPv6'
+        -
+          uuid: 3994ea973d5f499ab99c972730b77f16
+          name: 'Session IPv6 Overflows'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.119.2.3.84.13.1.4.0
+          key: net.session.ipv6.overflows
+          delay: 3m
+          preprocessing:
+            -
+              type: SIMPLE_CHANGE
+              parameters:
+                - ''
+          tags:
+            -
+              tag: Application
+              value: 'Session IPv6'
+        -
+          uuid: aa896da6a2a7491d9f506985333ec65f
+          name: 'Session IPv6 Peaks'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.119.2.3.84.13.1.2.0
+          key: net.session.ipv6.peaks
+          delay: 3m
+          preprocessing:
+            -
+              type: SIMPLE_CHANGE
+              parameters:
+                - ''
+          tags:
+            -
+              tag: Application
+              value: 'Session IPv6'
+      discovery_rules:
+        -
+          uuid: 9c64f16a7a4a4fa0b61bfad291cae145
+          name: 'Network napt interfaces discovery'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#IFNAME},1.3.6.1.2.1.2.2.1.2,{#IFDESCR},1.3.6.1.2.1.2.2.1.2,{#IFNAPTCACHEENTRIES},1.3.6.1.4.1.119.2.3.84.15.1.1.1.2,{#IFNAPTCACHEPEAK},1.3.6.1.4.1.119.2.3.84.15.1.1.1.3,{#IFNAPTCACHECREATE},1.3.6.1.4.1.119.2.3.84.15.1.1.1.4]'
+          key: net.if.napt.discovery
+          delay: 1h
+          filter:
+            evaltype: AND
+            conditions:
+              -
+                macro: '{#IFNAPTCACHEENTRIES}'
+                value: '{$NET.IF.IFNAPTCACHEENTRIES.MATCHES}'
+                formulaid: F
+              -
+                macro: '{#IFNAPTCACHEPEAK}'
+                value: '{$NET.IF.IFNAPTCACHEPEAK.MATCHES}'
+                formulaid: G
+              -
+                macro: '{#IFNAME}'
+                value: '{$NET.IF.IFNAME.MATCHES}'
+                formulaid: C
+              -
+                macro: '{#IFNAME}'
+                value: '{$NET.IF.IFNAME.NOT_MATCHES}'
+                operator: NOT_MATCHES_REGEX
+                formulaid: D
+              -
+                macro: '{#IFDESCR}'
+                value: '{$NET.IF.IFDESCR.MATCHES}'
+                formulaid: A
+              -
+                macro: '{#IFDESCR}'
+                value: '{$NET.IF.IFDESCR.NOT_MATCHES}'
+                operator: NOT_MATCHES_REGEX
+                formulaid: B
+              -
+                macro: '{#IFNAPTCACHECREATE}'
+                value: '{$NET.IF.IFNAPTCACHECREATE.MATCHES}'
+                formulaid: E
+          item_prototypes:
+            -
+              uuid: 076b49b00b954035bbb06d1969ce08ae
+              name: 'Interface NAPT {#IFDESCR}: Cache Create'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.119.2.3.84.15.1.1.1.4.{#SNMPINDEX}'
+              key: 'net.if.napt[ifcc.{#SNMPINDEX}]'
+              delay: 3m
+              history: 7d
+              preprocessing:
+                -
+                  type: SIMPLE_CHANGE
+                  parameters:
+                    - ''
+              tags:
+                -
+                  tag: Application
+                  value: 'Interface NAPT {#IFDESCR}'
+            -
+              uuid: 5d98dbb3429b40b2bc50fcdef4ab6020
+              name: 'Interface NAPT {#IFDESCR}: Cache Entry'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.119.2.3.84.15.1.1.1.2.{#SNMPINDEX}'
+              key: 'net.if.napt[ifce.{#SNMPINDEX}]'
+              delay: 3m
+              history: 7d
+              tags:
+                -
+                  tag: Application
+                  value: 'Interface NAPT {#IFDESCR}'
+            -
+              uuid: 688cdfce2dde4ee5a6089c2858783e8a
+              name: 'Interface NAPT {#IFDESCR}: Cache Overflows'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.119.2.3.84.15.1.1.1.5.{#SNMPINDEX}'
+              key: 'net.if.napt[ifco.{#SNMPINDEX}]'
+              delay: 3m
+              history: 7d
+              preprocessing:
+                -
+                  type: SIMPLE_CHANGE
+                  parameters:
+                    - ''
+              tags:
+                -
+                  tag: Application
+                  value: 'Interface NAPT {#IFDESCR}'
+            -
+              uuid: e07092a0f6d9490382ef579235735be0
+              name: 'Interface NAPT {#IFDESCR}: Cache Peak'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.119.2.3.84.15.1.1.1.3.{#SNMPINDEX}'
+              key: 'net.if.napt[ifcp.{#SNMPINDEX}]'
+              delay: 3m
+              history: 7d
+              preprocessing:
+                -
+                  type: SIMPLE_CHANGE
+                  parameters:
+                    - ''
+              tags:
+                -
+                  tag: Application
+                  value: 'Interface NAPT {#IFDESCR}'
+          graph_prototypes:
+            -
+              uuid: 7514cc51e09e4fc9a3d133d4625696c8
+              name: 'Interface {#IFDESCR}: NAPT Cache'
+              graph_items:
+                -
+                  color: 199C0D
+                  calc_fnc: ALL
+                  item:
+                    host: 'NEC IX Sessions'
+                    key: 'net.if.napt[ifcc.{#SNMPINDEX}]'
+                -
+                  sortorder: '1'
+                  drawtype: FILLED_REGION
+                  color: 0080FF
+                  calc_fnc: ALL
+                  item:
+                    host: 'NEC IX Sessions'
+                    key: 'net.if.napt[ifce.{#SNMPINDEX}]'
+                -
+                  sortorder: '2'
+                  drawtype: DASHED_LINE
+                  color: F63100
+                  calc_fnc: ALL
+                  item:
+                    host: 'NEC IX Sessions'
+                    key: 'net.if.napt[ifco.{#SNMPINDEX}]'
+                -
+                  sortorder: '3'
+                  drawtype: DASHED_LINE
+                  color: F7941D
+                  calc_fnc: ALL
+                  item:
+                    host: 'NEC IX Sessions'
+                    key: 'net.if.napt[ifcp.{#SNMPINDEX}]'
+      macros:
+        -
+          macro: '{$IF.ERRORS.WARN}'
+          value: '2'
+        -
+          macro: '{$IF.UTIL.MAX}'
+          value: '95'
+        -
+          macro: '{$IFCONTROL}'
+          value: '1'
+        -
+          macro: '{$NET.IF.IFDESCR.MATCHES}'
+          value: '.*'
+        -
+          macro: '{$NET.IF.IFDESCR.NOT_MATCHES}'
+          value: CHANGE_IF_NEEDED
+        -
+          macro: '{$NET.IF.IFNAME.MATCHES}'
+          value: '^.*$'
+        -
+          macro: '{$NET.IF.IFNAME.NOT_MATCHES}'
+          value: '(^Software Loopback Interface|^NULL[0-9.]*$|^[Ll]o[0-9.]*$|^[Ss]ystem$|^Nu[0-9.]*$|^veth[0-9a-z]+$|docker[0-9]+|br-[a-z0-9]{12})'
+          description: 'Filter out loopbacks, nulls, docker veth links and docker0 bridge by default'
+        -
+          macro: '{$NET.IF.IFNAPTCACHECREATE.MATCHES}'
+          value: '^.*$'
+        -
+          macro: '{$NET.IF.IFNAPTCACHEENTRIES.MATCHES}'
+          value: '^.*$'
+        -
+          macro: '{$NET.IF.IFNAPTCACHEPEAK.MATCHES}'
+          value: '^.*$'
+  graphs:
+    -
+      uuid: 94274a1ba2174f549f5e480a94c7b71f
+      name: 'Session IPv4'
+      graph_items:
+        -
+          drawtype: FILLED_REGION
+          color: 0080FF
+          calc_fnc: ALL
+          item:
+            host: 'NEC IX Sessions'
+            key: net.session.ipv4.entry
+        -
+          sortorder: '1'
+          color: 199C0D
+          calc_fnc: ALL
+          item:
+            host: 'NEC IX Sessions'
+            key: net.session.ipv4.create
+        -
+          sortorder: '2'
+          drawtype: DASHED_LINE
+          color: F63100
+          calc_fnc: ALL
+          item:
+            host: 'NEC IX Sessions'
+            key: net.session.ipv4.overflows
+        -
+          sortorder: '3'
+          drawtype: DASHED_LINE
+          color: F7941D
+          calc_fnc: ALL
+          item:
+            host: 'NEC IX Sessions'
+            key: net.session.ipv4.peaks
+    -
+      uuid: 7bacc583f1f6419fa2ceb272b3d626a6
+      name: 'Session IPv6'
+      graph_items:
+        -
+          drawtype: FILLED_REGION
+          color: 0080FF
+          calc_fnc: ALL
+          item:
+            host: 'NEC IX Sessions'
+            key: net.session.ipv6.entry
+        -
+          sortorder: '1'
+          color: 199C0D
+          calc_fnc: ALL
+          item:
+            host: 'NEC IX Sessions'
+            key: net.session.ipv6.create
+        -
+          sortorder: '2'
+          drawtype: DASHED_LINE
+          color: F63100
+          calc_fnc: ALL
+          item:
+            host: 'NEC IX Sessions'
+            key: net.session.ipv6.overflows
+        -
+          sortorder: '3'
+          drawtype: DASHED_LINE
+          color: F7941D
+          calc_fnc: ALL
+          item:
+            host: 'NEC IX Sessions'
+            key: net.session.ipv6.peaks

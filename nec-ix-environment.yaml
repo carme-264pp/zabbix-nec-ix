@@ -1,0 +1,180 @@
+zabbix_export:
+  version: '6.0'
+  date: '2022-12-10T06:58:44Z'
+  groups:
+    -
+      uuid: 36bff6c29af64692839d077febfc7079
+      name: 'Templates/Network devices'
+  templates:
+    -
+      uuid: 66150e776314472c89e78855a553c743
+      template: 'NEC IX Environment'
+      name: 'NEC IX Environment'
+      groups:
+        -
+          name: 'Templates/Network devices'
+      items:
+        -
+          uuid: da0329af0b92493789be36b82ded9d23
+          name: 'IX Memory Total Size'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.119.2.3.84.2.6.1.0
+          key: nec.ix.snmp.memory.size
+          delay: 1h
+          units: B
+          tags:
+            -
+              tag: Application
+              value: Memory
+        -
+          uuid: b0dd0dd10f9b4c5daa8de0a5aeeaffa2
+          name: 'IX Memory Usage Size'
+          type: CALCULATED
+          key: nec.ix.snmp.memory.usage
+          value_type: FLOAT
+          units: B
+          params: 'last(//nec.ix.snmp.memory.size) * last(//nec.ix.snmp.memory.util) / 100'
+          tags:
+            -
+              tag: Application
+              value: Memory
+        -
+          uuid: 5fa18fa007724213a9eaabea386d814e
+          name: 'IX Memory Util'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.119.2.3.84.2.6.2.0
+          key: nec.ix.snmp.memory.util
+          value_type: FLOAT
+          tags:
+            -
+              tag: Application
+              value: Memory
+        -
+          uuid: b5b942a4cd3b4e409614bd198cbe3bb1
+          name: 'IX Temperature'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.119.2.3.84.2.1.1.0
+          key: nec.ix.snmp.temperature
+          units: ℃
+          tags:
+            -
+              tag: Application
+              value: Temp
+        -
+          uuid: 3ea382c731934cc297792e6c0f5c31ed
+          name: 'IX CPU Utilization 1 hour'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.119.2.3.84.2.5.4.0
+          key: nec.ix.snmp.utilization.1hour
+          units: '%'
+          tags:
+            -
+              tag: Application
+              value: CPU
+        -
+          uuid: 15b9ffbbed0e44518b5099c19fb0206f
+          name: 'IX CPU Utilization 1 min'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.119.2.3.84.2.5.3.0
+          key: nec.ix.snmp.utilization.1min
+          units: '%'
+          tags:
+            -
+              tag: Application
+              value: CPU
+        -
+          uuid: e7d6068882ce419d9ad6c0fa0e2c1e58
+          name: 'IX CPU Utilization 1 sec'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.119.2.3.84.2.5.1.0
+          key: nec.ix.snmp.utilization.1sec
+          units: '%'
+          tags:
+            -
+              tag: Application
+              value: CPU
+        -
+          uuid: 525a617b9ca349e88f5e31e583dade71
+          name: 'IX CPU Utilization 5 sec'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.119.2.3.84.2.5.2.0
+          key: nec.ix.snmp.utilization.5sec
+          units: '%'
+          tags:
+            -
+              tag: Application
+              value: CPU
+        -
+          uuid: e4829bf7b2a9426d9cc3439dad6dd59b
+          name: 'IX Voltage'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.119.2.3.84.2.2.0
+          key: nec.ix.snmp.voltage
+          delay: 3m
+          units: mV
+          tags:
+            -
+              tag: Application
+              value: 'IX voltage'
+  graphs:
+    -
+      uuid: c97082d6d0944780b2762cbe223f4e81
+      name: 'NEC IX CPU Utilization'
+      graph_items:
+        -
+          color: 2774A4
+          item:
+            host: 'NEC IX Environment'
+            key: nec.ix.snmp.utilization.1sec
+        -
+          sortorder: '1'
+          color: F7941D
+          item:
+            host: 'NEC IX Environment'
+            key: nec.ix.snmp.utilization.5sec
+        -
+          sortorder: '2'
+          color: F63100
+          item:
+            host: 'NEC IX Environment'
+            key: nec.ix.snmp.utilization.1min
+        -
+          sortorder: '3'
+          color: 199C0D
+          item:
+            host: 'NEC IX Environment'
+            key: nec.ix.snmp.utilization.1hour
+    -
+      uuid: b731947298ad412fb54ab377b8c99eaa
+      name: 'NEC IX Memory Utilization'
+      graph_items:
+        -
+          color: 199C0D
+          item:
+            host: 'NEC IX Environment'
+            key: nec.ix.snmp.memory.size
+        -
+          sortorder: '1'
+          drawtype: FILLED_REGION
+          color: 2774A4
+          item:
+            host: 'NEC IX Environment'
+            key: nec.ix.snmp.memory.usage
+    -
+      uuid: 6b48230b4b9c40a1b990ede2c8d5a931
+      name: 'NEC IX Temperature'
+      graph_items:
+        -
+          color: 199C0D
+          item:
+            host: 'NEC IX Environment'
+            key: nec.ix.snmp.temperature
+    -
+      uuid: 983b3d0534794b439a43af7dc1daa518
+      name: 'NEC IX Voltage'
+      graph_items:
+        -
+          color: 199C0D
+          item:
+            host: 'NEC IX Environment'
+            key: nec.ix.snmp.voltage
