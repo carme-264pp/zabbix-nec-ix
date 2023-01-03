@@ -1,6 +1,6 @@
 zabbix_export:
   version: '6.0'
-  date: '2022-12-10T06:58:59Z'
+  date: '2023-01-03T07:07:50Z'
   groups:
     -
       uuid: 36bff6c29af64692839d077febfc7079
@@ -64,11 +64,6 @@ zabbix_export:
           snmp_oid: 1.3.6.1.4.1.119.2.3.84.12.1.2.0
           key: net.session.ipv4.peaks
           delay: 3m
-          preprocessing:
-            -
-              type: SIMPLE_CHANGE
-              parameters:
-                - ''
           tags:
             -
               tag: Application
@@ -123,11 +118,6 @@ zabbix_export:
           snmp_oid: 1.3.6.1.4.1.119.2.3.84.13.1.2.0
           key: net.session.ipv6.peaks
           delay: 3m
-          preprocessing:
-            -
-              type: SIMPLE_CHANGE
-              parameters:
-                - ''
           tags:
             -
               tag: Application
@@ -228,11 +218,6 @@ zabbix_export:
               key: 'net.if.napt[ifcp.{#SNMPINDEX}]'
               delay: 3m
               history: 7d
-              preprocessing:
-                -
-                  type: SIMPLE_CHANGE
-                  parameters:
-                    - ''
               tags:
                 -
                   tag: Application
@@ -243,19 +228,19 @@ zabbix_export:
               name: 'Interface {#IFDESCR}: NAPT Cache'
               graph_items:
                 -
-                  color: 199C0D
-                  calc_fnc: ALL
-                  item:
-                    host: 'NEC IX Sessions'
-                    key: 'net.if.napt[ifcc.{#SNMPINDEX}]'
-                -
-                  sortorder: '1'
                   drawtype: FILLED_REGION
                   color: 0080FF
                   calc_fnc: ALL
                   item:
                     host: 'NEC IX Sessions'
                     key: 'net.if.napt[ifce.{#SNMPINDEX}]'
+                -
+                  sortorder: '1'
+                  color: 199C0D
+                  calc_fnc: ALL
+                  item:
+                    host: 'NEC IX Sessions'
+                    key: 'net.if.napt[ifcc.{#SNMPINDEX}]'
                 -
                   sortorder: '2'
                   drawtype: DASHED_LINE
